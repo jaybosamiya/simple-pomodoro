@@ -1,0 +1,17 @@
+#! /bin/sh
+
+if [ -z "$1" ]; then
+    POMODORO=1800
+else
+    POMODORO="$1"
+fi
+
+echo "Will blink the screen every $POMODORO seconds." 1>&2
+
+while true; do
+    ORIG=$(xbacklight)
+    xbacklight -set 1
+    sleep 0.1
+    xbacklight -set $ORIG
+    sleep $POMODORO
+done
