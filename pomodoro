@@ -10,6 +10,13 @@ echo "Will blink the screen every $POMODORO seconds." 1>&2
 
 while true; do
     ORIG=$(xbacklight)
+    if [ $(echo "$ORIG < 1" | bc -l) -eq 1 ]; then
+        # Prevent screen from going too damn dim
+        # This to fix the problem if the screen gets locked at the wrong time
+        # Otherwise, it might happen that nothing on the screen is visible anymore
+        # The value 1.5 maintains at least minimum visibility
+        ORIG='1.5'
+    fi
     xbacklight -set 1
     sleep 0.1
     xbacklight -set $ORIG
